@@ -1,4 +1,4 @@
-# scripts/extract_hex_level8.R
+# scripts/extract_hex_res8.R
 # CoCT JPAL challenge
 
 source("scripts/requirements.R")
@@ -13,7 +13,7 @@ library(fs)
 url <- "https://cct-ds-code-challenge-input-data.s3.af-south-1.amazonaws.com/city-hex-polygons-8-10.geojson"
 url2 <- "https://cct-ds-code-challenge-input-data.s3.af-south-1.amazonaws.com/city-hex-polygons-8.geojson" 
 raw_path <- "data/raw/city-hex-polygons-8-10.geojson"
-processed_path <- "data/processed/city-hex-polygons-8.geojson"
+processed_path <- "data/processed/city-hex-polygons-8(new).geojson"
 log_path <- "logs/extraction_log.txt"
 
 tic("Hex level 8 extraction")
@@ -48,3 +48,4 @@ tryCatch({
   write(paste(Sys.time(), "- ERROR:", e$message, "- after", elapsed$toc - elapsed$tic, "seconds"), file = log_path, append = TRUE)
   stop(e)
 })
+

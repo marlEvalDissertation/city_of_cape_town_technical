@@ -1,12 +1,14 @@
-# requirements.R
+# scripts/requirements.R
 #CoCT x JPAL challenge
 
 required_packages <- c(
-  "aws.s3",     # S3 data access
-  "sf",         # spatial data
-  "jsonlite",   # JSON handling
-  "tictoc",     # timing/logging
-  "fs"          # file system handling
+  "aws.s3",     
+  "sf",         
+  "jsonlite",   
+  "tictoc",    
+  "fs"    ,      
+  "dplyr",
+  "testthat"
 )
 
 install_if_missing <- function(packages) {
