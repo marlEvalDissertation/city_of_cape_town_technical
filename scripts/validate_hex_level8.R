@@ -1,6 +1,8 @@
 # scripts/validate_hex_level8.R
 # CoCT JPAL challenge
 
+#Compares data downloaded in hex_polygons_8 to data extract made from polygons-8-10 into hex-polygons-8(new).
+# all data should be level/resolution 8
 
 source("scripts/requirements.R")
 

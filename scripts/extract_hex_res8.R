@@ -1,6 +1,9 @@
 # scripts/extract_hex_res8.R
 # CoCT JPAL challenge
 
+#Extracts data from source URLs
+#Possible to instead use AWS credentials provided - not working.
+
 source("scripts/requirements.R")
 
 library(aws.s3)
