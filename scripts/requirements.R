@@ -8,7 +8,8 @@ required_packages <- c(
   "tictoc",    
   "fs"    ,      
   "dplyr",
-  "testthat"
+  "testthat",
+  "readr"
 )
 
 install_if_missing <- function(packages) {
