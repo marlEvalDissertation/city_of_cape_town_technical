@@ -3,9 +3,10 @@
 
 # Tests for extracted geojson
 
-source("scripts/requirements.R")
 library(testthat)
 library(sf)
+library(jsonlite)
+library(fs)
 
 test_that("Extracted file exists and loads", {
   expect_true(file.exists("data/processed/city-hex-polygons-8(new).geojson"))
@@ -19,3 +20,4 @@ test_that("Only resolution 8 polygons present", {
   expect_equal(length(res_col), 1)
   expect_true(all(geo[[res_col]] == 8))
 })
+

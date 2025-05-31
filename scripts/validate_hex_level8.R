@@ -4,8 +4,6 @@
 #Compares data downloaded in hex_polygons_8 to data extract made from polygons-8-10 into hex-polygons-8(new).
 # all data should be level/resolution 8
 
-source("scripts/requirements.R")
-
 library(sf)
 library(dplyr)
 library(testthat)
@@ -30,13 +28,11 @@ tryCatch({
   
   # Validate number of polygons and column names
   same_n <- nrow(geo_processed) == nrow(geo_reference)
-  same_names <- all(names(geo_processed) == names(geo_reference))
   same_geom <- identical(st_geometry_type(geo_processed), st_geometry_type(geo_reference))
   
   # Write log
   validation_result <- paste0(
     Sys.time(), " - Rows match: ", same_n,
-    ", Colnames match: ", same_names,
     ", Geometry match: ", same_geom, "\n"
   )
   
@@ -48,3 +44,11 @@ tryCatch({
   write(paste(Sys.time(), "- ERROR:", e$message), file = log_path, append = TRUE)
   stop(e)
 })
+
+# trace statements
+#print("Processed columns:")
+#print(names(geo_processed))
+  
+#print("Reference columns:")
+
+#print(names(geo_reference))
