@@ -1,0 +1,10 @@
+2025-05-31 13:01:32.492193 - ERROR: In argument: `!is.na(Latitude) & !is.na(Longitude)`. - after 8.90000000002328 seconds
+
+2025-05-31 16:16:09.999431 - ERROR: In argument: `!is.na(Latitude) & !is.na(Longitude)`. - after 8.45000000001164 seconds
+
+2025-05-31 17:16:58.020758 - Joined 729267 of 941634 (77.45% success) - Time: 273.44 s
+
+2025-05-31 17:19:42.555167 - Joined 729267 of 941634 (77.45% success) - Time: 75.53 s
+
+2025-05-31 17:36:08.977578 - Joined 729267 of 941634 (77.45% success) - Time: 68.6 s
+
