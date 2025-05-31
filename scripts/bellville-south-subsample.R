@@ -3,6 +3,7 @@
 #samples data from the sr_hex csv that is within 1 minute of the centroid of the Bellville south suburb
 
 source("scripts/requirements.R")
+source("scripts/get_bellville_centroid.R")
 
 library(dplyr)
 library(readr)
@@ -13,9 +14,8 @@ library(tictoc)
 # File paths
 input_path <- "data/raw/sr_hex.csv.gz"
 output_path <- "data/processed/sr_bellville_south_subsample.csv.gz"
+centroid_path <- "data/processed/bellville_centroid.csv"
 log_path <- "logs/subsample_log.txt"
-
-centroid <- c(18.644444, -33.916111)  # (longitude, latitude)
 
 # Distance threshold (1 minute of arc approx 1.85km)
 distance_threshold_km <- 1.85
@@ -26,9 +26,21 @@ tic("Bellville subsample filter")
 tryCatch({
   # Check input exists
   if (!file_exists(input_path)) stop("Input file not found: ", input_path)
+  if (!file_exists(centroid_path)) stop("Missing centroid file: ", centroid_path)
   
   # Load data
   sr_data <- read_csv(input_path, show_col_types = FALSE)
+  centroid_df <- read_csv(centroid_path, show_col_types = FALSE)
+  
+  # Validate centroid structure
+  if (!all(c("centroid_latitude", "centroid_longitude") %in% names(centroid_df))) {
+    stop("Centroid file missing required columns.")
+  }
+  
+  centroid <- c(
+    centroid_df$centroid_longitude[1],
+    centroid_df$centroid_latitude[1]
+  )
   
   # Ensure required columns exist
   if (!all(c("longitude", "latitude") %in% names(sr_data))) stop("Missing required latitude/longitude columns.")
