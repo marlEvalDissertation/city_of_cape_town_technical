@@ -2,6 +2,8 @@
 # CoCT x JPAL challenge
 # test the join operation
 
+source("scripts/requirements.R")
+
 library(testthat)
 library(dplyr)
 library(sf)
