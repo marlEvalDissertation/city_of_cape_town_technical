@@ -9,7 +9,8 @@ required_packages <- c(
   "fs"    ,      
   "dplyr",
   "testthat",
-  "readr"
+  "readr",
+  "geosphere"
 )
 
 install_if_missing <- function(packages) {

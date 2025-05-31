@@ -1,0 +1,8 @@
+2025-05-31 19:42:02.373259 - ERROR during filtering: object 'input_path' not found after  sec
+
+2025-05-31 19:42:17.76731 - ERROR during filtering: points should be vectors of length 2, matrices with 2 columns, or inheriting from a SpatialPoints or SpatVector object after  sec
+
+2025-05-31 19:44:13.189545 - Filtered 8251 requests within 1.85 km of Bellville South centroid. Time taken: 30.94 sec
+
+2025-05-31 19:45:02.878289 - Filtered 8251 requests within 1.85 km of Bellville South centroid. Time taken: 8.34 sec
+
