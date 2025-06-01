@@ -24,8 +24,7 @@ tryCatch({
   # Convert creation_timestamp to Africa/Johannesburg timezone, round to 6 hours
   data <- data %>%
     mutate(
-      creation_timestamp = ymd_hms(creation_timestamp, tz = "UTC") %>%
-        with_tz("Africa/Johannesburg"),
+      creation_timestamp = ymd_hms(creation_timestamp, tz = "Africa/Johannesburg"),
       anonymised_time = floor_date(creation_timestamp, unit = "6 hours")
     )
   
