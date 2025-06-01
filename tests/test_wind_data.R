@@ -2,11 +2,12 @@
 # Unit tests for downloaded wind data
 
 source("scripts/requirements.R")
-
+suppressPackageStartupMessages({
 library(testthat)
 library(readr)
 library(lubridate)
 library(fs)
+})
 
 # File path
 wind_path <- "data/processed/wind_bellville_2020.csv.gz"

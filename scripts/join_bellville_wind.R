@@ -4,12 +4,14 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(dplyr)
 library(readr)
 library(lubridate)
 library(tictoc)
 library(fs)
-library(data.table)  # For efficient rolling joins
+library(data.table)
+})
 
 # Paths
 subsample_path <- "data/processed/sr_bellville_south_subsample.csv.gz"
@@ -69,7 +71,7 @@ tryCatch({
   
   # Save output
   dir_create(dirname(output_path))
-  write_csv(joined, output_path)
+  write_csv(result, output_path)
   
   # Logging
   elapsed <- toc(log = FALSE)

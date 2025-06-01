@@ -1,10 +1,12 @@
 # tests/testthat/test_integration_bellville.R
 # CoCT x JPAL data science challenge
 
+suppressPackageStartupMessages({
 library(testthat)
 library(readr)
 library(dplyr)
 library(geosphere)
+})
 
 test_that("All subsample rows are within 1.85 km of computed centroid", {
   centroid_path <- "data/processed/bellville_centroid.csv"

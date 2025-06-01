@@ -4,11 +4,13 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(dplyr)
 library(readr)
 library(sf)
 library(tictoc)
 library(fs)
+})
 
 # Required input files
 required_files <- c(
@@ -47,7 +49,7 @@ tic("Service request hex join")
 tryCatch({
   # Read in data
   hex <- st_read(hex_path, quiet = TRUE)
-  sr_raw <- read_csv(sr_path, col_types = cols(`...1` = col_skip()), show_col_types = FALSE)  
+  sr_raw <- suppressMessages(read_csv(sr_path, col_types = cols(`...1` = col_skip()), show_col_types = FALSE))  
   
   # Convert to sf for spatial join (only if coords are present)
   sr_sf <- sr_raw %>%

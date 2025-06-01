@@ -3,10 +3,11 @@
 
 # Tests for extracted geojson
 
+suppressPackageStartupMessages({
 library(testthat)
 library(sf)
 library(jsonlite)
-library(fs)
+})
 
 test_that("Extracted file exists and loads", {
   expect_true(file.exists("data/processed/city-hex-polygons-8(new).geojson"))

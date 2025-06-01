@@ -4,9 +4,11 @@
 #Compares data downloaded in hex_polygons_8 to data extract made from polygons-8-10 into hex-polygons-8(new).
 # all data should be level/resolution 8
 
+suppressPackageStartupMessages({
 library(sf)
 library(dplyr)
 library(testthat)
+})
 
 processed_path <- "data/processed/city-hex-polygons-8(new).geojson"
 reference_path <- "data/raw/city-hex-polygons-8.geojson"

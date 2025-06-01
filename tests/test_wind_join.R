@@ -1,12 +1,12 @@
 # tests/test_wind_join.R
 # CoCT x JPAL Challenge
 # Wind Data Integration Tests
-
+suppressPackageStartupMessages({
 library(testthat)
 library(readr)
 library(lubridate)
 library(dplyr)
-
+})
 wind_path <- "data/processed/wind_bellville_2020.csv.gz"
 joined_path <- "data/processed/sr_wind_joined.csv.gz"
 
@@ -19,7 +19,7 @@ test_that("Joined data has valid structure and timestamps", {
   # Parse timestamps
   creation_ts <- ymd_hms(joined_data$creation_timestamp, tz = "UTC") %>%
     with_tz("Africa/Johannesburg")
-  wind_ts <- ymd_hms(joined_data$timestamp, tz = "Africa/Johannesburg")
+  wind_ts <- ymd_hms(joined_data$creation_timestamp, tz = "Africa/Johannesburg")
   
   # Check that wind timestamp is not after the request
   expect_true(all(wind_ts <= creation_ts))

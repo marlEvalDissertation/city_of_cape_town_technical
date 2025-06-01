@@ -4,10 +4,12 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(dplyr)
 library(readr)
 library(fs)
 library(tictoc)
+})
 
 # File paths
 input_path <- "data/processed/sr_with_hex.csv.gz"

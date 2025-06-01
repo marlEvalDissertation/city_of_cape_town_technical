@@ -5,11 +5,13 @@
 source("scripts/requirements.R")
 source("scripts/get_bellville_centroid.R")
 
+suppressPackageStartupMessages({
 library(dplyr)
 library(readr)
 library(geosphere)
 library(fs)
 library(tictoc)
+})
 
 # File paths
 input_path <- "data/raw/sr_hex.csv.gz"
@@ -56,6 +58,7 @@ tryCatch({
   
   # Filter to those within 1.85km
   sr_filtered <- sr_valid %>% filter(distance_to_centroid_km <= distance_threshold_km)
+  sr_filtered <- sr_filtered %>% select(-distance_to_centroid_km)
   
   # Save output
   write_csv(sr_filtered, output_path)

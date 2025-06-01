@@ -11,10 +11,9 @@ extract:
 	Rscript scripts/extract_hex_res8.R
 	Rscript scripts/download_sr_data.R
 	Rscript scripts/join_sr_to_hex.R
-	Rscript scripts/get_bellville_centroid.R
 	Rscript scripts/bellville-south-subsample.R
 	Rscript scripts/download_wind_data.R
-	Rscript scritp/join_bellville_wind.R
+	Rscript scripts/join_bellville_wind.R
 
 validate:
 	Rscript scripts/validate_hex_level8.R

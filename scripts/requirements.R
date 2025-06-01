@@ -13,9 +13,11 @@ required_packages <- c(
   "geosphere",
   "httr",
   "lubridate",
-  "data.table"
+  "data.table",
+  "h3jsr"
 )
 
+suppressPackageStartupMessages({
 install_if_missing <- function(packages) {
   to_install <- packages[!packages %in% rownames(installed.packages())]
   if (length(to_install)) {
@@ -25,3 +27,4 @@ install_if_missing <- function(packages) {
 }
 
 install_if_missing(required_packages)
+})

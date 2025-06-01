@@ -6,11 +6,13 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(aws.s3)
 library(sf)
 library(jsonlite)
 library(tictoc)
 library(fs)
+})
 
 
 url <- "https://cct-ds-code-challenge-input-data.s3.af-south-1.amazonaws.com/city-hex-polygons-8-10.geojson"

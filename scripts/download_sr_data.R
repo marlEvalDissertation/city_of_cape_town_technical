@@ -4,8 +4,10 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(tictoc)
 library(fs)
+})
 
 # File paths
 urls <- list(

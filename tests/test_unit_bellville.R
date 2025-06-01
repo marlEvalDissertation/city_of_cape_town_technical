@@ -1,10 +1,10 @@
 # tests/test_unit_bellville.R
 # CoCT x JPAL Data science challenge
-
+suppressPackageStartupMessages({
 library(testthat)
 library(readr)
 library(dplyr)
-
+})
 test_that("Centroid CSV contains expected structure", {
   path <- "data/processed/bellville_centroid.csv"
   expect_true(file.exists(path))
@@ -20,6 +20,5 @@ test_that("Subsample output exists and contains expected structure", {
   expect_true(file.exists(path))
   
   df <- read_csv(path, show_col_types = FALSE)
-  expect_true("distance_to_centroid_km" %in% colnames(df))
   expect_true(all(c("latitude", "longitude") %in% colnames(df)))
 })

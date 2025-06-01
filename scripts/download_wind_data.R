@@ -4,6 +4,7 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(httr)
 library(readr)
 library(dplyr)
@@ -11,6 +12,7 @@ library(lubridate)
 library(fs)
 library(tictoc)
 library(jsonlite)
+})
 
 # Paths
 centroid_path <- "data/processed/bellville_centroid.csv"

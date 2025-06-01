@@ -4,9 +4,11 @@
 
 source("scripts/requirements.R")
 
+suppressPackageStartupMessages({
 library(testthat)
 library(readr)
-library(fs)
+library
+})
 
 test_that("End-to-end pipeline produces expected joined file", {
   # Clean any prior outputs

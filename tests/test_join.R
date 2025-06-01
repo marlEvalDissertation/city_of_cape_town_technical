@@ -3,10 +3,11 @@
 # test the join operation
 
 source("scripts/requirements.R")
-
+suppressPackageStartupMessages({
 library(testthat)
 library(dplyr)
 library(sf)
+})
 
 test_that("Missing lat/lon rows are handled correctly", {
   df <- tibble(
