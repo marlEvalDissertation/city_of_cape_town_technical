@@ -30,6 +30,7 @@ tryCatch({
   
   # Select columns to keep for anonymised output
   anonymised <- data %>%
+    mutate(anonymised_time = format(anonymised_time, "%Y-%m-%d %H:%M:%S")) %>% 
     select(
       anonymised_time,
       wind_speed_10m,

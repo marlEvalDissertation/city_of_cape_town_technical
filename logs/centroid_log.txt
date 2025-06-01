@@ -34,3 +34,5 @@
 
 2025-06-01 20:51:27.407316 - Calculated Bellville South centroid (-33.917281, 18.642285). Time: 7.67 sec
 
+2025-06-01 22:24:40.965736 - Calculated Bellville South centroid (-33.917281, 18.642285). Time: 6.83 sec
+
