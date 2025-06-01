@@ -14,6 +14,7 @@ extract:
 	Rscript scripts/bellville-south-subsample.R
 	Rscript scripts/download_wind_data.R
 	Rscript scripts/join_bellville_wind.R
+	Rscript scripts/anonymise_sr_data.R
 
 validate:
 	Rscript scripts/validate_hex_level8.R
