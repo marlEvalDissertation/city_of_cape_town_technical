@@ -1,3 +1,5 @@
 2025-05-31 17:56:45.375679 - Validation result: FALSE | Row match: TRUE | Index match: FALSE
 2025-05-31 18:03:55.279868 - Validation result: TRUE | Row match: TRUE | Index match: TRUE
 2025-05-31 18:42:01.255586 - Validation result: TRUE | Row match: TRUE | Index match: TRUE
+2025-06-01 12:43:07.104157 - Validation result: TRUE | Row match: TRUE | Index match: TRUE
+2025-06-01 12:51:39.556346 - Validation result: TRUE | Row match: TRUE | Index match: TRUE

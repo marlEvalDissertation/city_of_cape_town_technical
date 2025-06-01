@@ -14,7 +14,7 @@ test_that("End-to-end pipeline produces expected joined file", {
     file_delete("data/processed/sr_with_hex.csv.gz")
   }
   
-  # Run the join script (will trigger download if needed)
+  # Run the join script
   result <- system("Rscript scripts/join_sr_to_hex.R", intern = TRUE)
   
   # Check that output file is created
@@ -30,4 +30,5 @@ test_that("End-to-end pipeline produces expected joined file", {
   # Check row count and index content
   expect_equal(nrow(result_df), nrow(reference_df))
   expect_true(all(result_df$index %in% reference_df$index))
+  setdiff(unique(result_df$index), unique(reference_df$index))
 })
