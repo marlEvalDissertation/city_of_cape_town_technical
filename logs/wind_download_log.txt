@@ -1,0 +1,12 @@
+2025-06-01 16:02:07.86214 - ERROR in wind data fetch: Failed to download wind data. after 1.55 sec
+
+2025-06-01 16:02:45.910452 - ERROR in wind data fetch: Failed to download wind data. after 1.4 sec
+
+2025-06-01 17:18:44.035415 - Downloaded and saved 8784 hourly wind observations. Time taken: 2.14 sec
+
+2025-06-01 17:21:00.509432 - ERROR during wind data fetch: object 'wind_data' not found after 2.27 sec
+
+2025-06-01 17:21:17.827637 - ERROR during wind data fetch: object 'wind_data' not found after 1.16 sec
+
+2025-06-01 17:24:51.38405 - Downloaded and saved 8784 hourly wind observations. Time taken: 2.59 sec
+

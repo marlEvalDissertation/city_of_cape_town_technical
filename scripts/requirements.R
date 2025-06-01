@@ -10,7 +10,9 @@ required_packages <- c(
   "dplyr",
   "testthat",
   "readr",
-  "geosphere"
+  "geosphere",
+  "httr",
+  "lubridate"
 )
 
 install_if_missing <- function(packages) {
