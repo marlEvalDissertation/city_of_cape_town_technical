@@ -12,7 +12,8 @@ required_packages <- c(
   "readr",
   "geosphere",
   "httr",
-  "lubridate"
+  "lubridate",
+  "data.table"
 )
 
 install_if_missing <- function(packages) {
