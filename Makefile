@@ -19,6 +19,8 @@ validate:
 test:
 	Rscript tests/test_hex_extraction.R
 	Rscript tests/test_join.R
+	Rscript tests/test_unit_bellville.R
+	Rscript tests/test_integration_bellville.R
 
 clean:
 	rm -f data/raw/*.geojson data/processed/*.geojson logs/*.txt
