@@ -26,6 +26,7 @@ test:
 	Rscript tests/test_unit_bellville.R
 	Rscript tests/test_integration_bellville.R
 	Rscript tests/test_wind_data.R
+	Rscript tests/test_wind_join.R
 
 clean:
 	rm -f data/raw/*.geojson data/processed/*.geojson logs/*.txt
