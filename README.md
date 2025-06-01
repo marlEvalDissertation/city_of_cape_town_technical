@@ -2,8 +2,15 @@
 
 <img src="img/city_emblem.png" alt="City Logo"/>
 
+![R version](https://img.shields.io/badge/R-≥%204.1.0-blue?logo=r)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Makefile](https://img.shields.io/badge/built%20with-Make-blue)
+![Test Coverage](https://img.shields.io/badge/tests-passing-brightgreen)
+![Project Status](https://img.shields.io/badge/status-active-success)
+
 This project combines City of Cape Town service request data for the 2020 calendar year with level 8 H3 geospatial indexing data. 
-The Bellville South service requests are combined with time-accurate wind speed and direction data from Open-Meteo [1]. This subsample is then anonymised according to principles of differential privacy for further use.
+The Bellville South service requests are then combined with time-accurate wind speed and direction data from Open-Meteo [1]. This subsample is then anonymised according to principles of differential privacy for potential further use.
+The project includes timing, logging of times, logging of errors, validation tests against provided validation sets as well as unit tests and even integration tests.
 
 ## Prerequisites
 
@@ -28,14 +35,7 @@ cd city_of_cape_town_technical
 
 ## Workflow and Execution
 
-To run the full data pipeline that:
-
-1. Downloads the City of Cape Town service request data
-2. Joins this with the level 8 H3 geospatial index data
-3. Subsamples a dataset of service requests from Bellville South
-4, Downloads relevant wind data from Open-Meteo [1]
-2. Joins the time-relevant wind data with the Bellville South subsample
-3. Anonymises the joined dataset per privacy specifications.
+### QuickStart
 
 Run the following:
 
@@ -44,7 +44,61 @@ Run the following:
 make
 ```
 
+This runs the full data pipeline that:
+
+1. Downloads the City of Cape Town service request data
+2. Joins this with the level 8 H3 geospatial index data
+3. Subsamples a dataset of service requests from Bellville South
+4. Downloads relevant wind data from Open-Meteo [1]
+5. Joins the time-relevant wind data with the Bellville South subsample
+6. Anonymises the joined dataset per privacy specifications
+7. Validation of the City data sets against provided data sets
+8. Unit and integration tests of all scripts.
+
+### Package Installation
+
+If code is to be run in a step-by-step manner then relevant R packages can be installed using the following.
+
+``` bash
+make install
+```
+
+### Data Extraction and Transformation
+
+All relevant data transformations and extractions can be run using:
+
+``` bash
+make extract
+```
+
+### Data Validation
+
+To perform data validation of the extracted resolution 8 H3 polygon data against `city-hex-polygons-8.geojson` and data validation of the joined service request data with the relevant level 8 H3 data as compared to `sr_hex.csv.gz` run the following:
+
+``` bash
+make validate
+```
+### Script Testing
+
+To perform relevant unit and integration tests that check the code run:
+
+``` bash
+make test
+```
+
+### Removing Data Files
+
+To remove all downloaded and processed data files run:
+
+``` bash
+make clean
+```
+## Details
+
+## File Structure
+
+## Script Content
 
 ## References
 
-[1] Open-Meteo. (n.d.). *Free Weather API for non-commercial use*. Retrieved from [https://open-meteo.com/](https://open-meteo.com/)
+[1] Open-Meteo. (n.d.). *Free Weather API for non-commercial use*. Retrieved from [Open-Meteo](https://open-meteo.com/)
