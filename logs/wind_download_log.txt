@@ -10,3 +10,7 @@
 
 2025-06-01 17:24:51.38405 - Downloaded and saved 8784 hourly wind observations. Time taken: 2.59 sec
 
+2025-06-01 17:33:03.84605 - ERROR during wind data download: cannot coerce type 'closure' to vector of type 'character' after 1.64 sec
+
+2025-06-01 17:38:58.559512 - Downloaded and saved 8784 hourly wind observations. Time taken: 5.54 sec
+

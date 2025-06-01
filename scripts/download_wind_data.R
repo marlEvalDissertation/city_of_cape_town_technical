@@ -1,6 +1,6 @@
 # scripts/download_wind_data.R
 # CoCT x JPAL Challenge
-# Download and clean 2020 wind data for Bellville South
+# Download and clean 2020 wind data for Bellville South (UTC+2 calendar year)
 
 source("scripts/requirements.R")
 
@@ -28,11 +28,13 @@ lon <- centroid$centroid_longitude[1]
 lat <- centroid$centroid_latitude[1]
 
 # API URL using Open-Meteo
+# To ensure we get the full 2020 calendar year in Africa/Johannesburg time,
+# we must extend the UTC window slightly: from 2019-12-31 to 2021-01-01
 url <- paste0(
   "https://archive-api.open-meteo.com/v1/archive?",
-  "latitude=", latitude,
-  "&longitude=", longitude,
-  "&start_date=2020-01-01&end_date=2020-12-31",
+  "latitude=", lat,
+  "&longitude=", lon,
+  "&start_date=2019-12-31&end_date=2021-01-01",
   "&hourly=wind_speed_10m,wind_direction_10m",
   "&timezone=Africa%2FJohannesburg"
 )
@@ -41,23 +43,24 @@ url <- paste0(
 tic("Wind data download")
 
 tryCatch({
-  # Request data
   response <- GET(url)
   if (http_error(response)) stop("Failed to download wind data.")
   
-  # Parse content
+  # Parse response
   json_data <- content(response, as = "text", encoding = "UTF-8")
   parsed <- fromJSON(json_data)
   
-  # Extract and clean data
+  # Extract and clean
   wind_data <- parsed$hourly %>%
     as_tibble() %>%
     mutate(
-      timestamp = ymd_hm(gsub("T", " ", time), tz = "Africa/Johannesburg")
+      timestamp = with_tz(ymd_hm(gsub("T", " ", time), tz = "UTC"), tzone = "Africa/Johannesburg")
     ) %>%
+    filter(timestamp >= as_datetime("2020-01-01", tz = "Africa/Johannesburg"),
+           timestamp <  as_datetime("2021-01-01", tz = "Africa/Johannesburg")) %>%
     select(timestamp, wind_speed_10m, wind_direction_10m)
   
-  # Save output
+  # Save cleaned data
   dir_create(dirname(output_path))
   write_csv(wind_data, output_path)
   
@@ -80,4 +83,3 @@ tryCatch({
   write(log_msg, file = log_path, append = TRUE)
   stop(e)
 })
-
