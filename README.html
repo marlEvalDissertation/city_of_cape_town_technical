@@ -453,29 +453,186 @@ run:</p>
 <h2>File Structure</h2>
 <pre><code>├── data/
 │ ├── raw/ # Unprocessed data files
-│ ├── processed/ # Cleaned and joined datasets
+│ └── processed/ # Cleaned and joined datasets
 │
-├── scripts/
-│ ├── requirements.R # Shared dependencies
-│ ├── download_wind_data.R # Downloads and cleans hourly wind data
-│ ├── join_wind.R # Joins wind data to service requests
-│ ├── anonymise_data.R # Anonymises joined dataset
+├── img/ # City of Cape Town Logo
 │
-├── tests/
-│ ├── testthat/ # Unit and integration tests
-│ └── testthat.R
+├── logs/ # logs of download and processing times and errors
+|
+├── scripts/ # All scripts for execution of project tasks and data validation
+│ ├── requirements.R
+│ ├── extract_hex_res8.R
+│ ├── download_sr_data.R
+│ ├── join_sr_to_hex.R
+│ ├── get_bellville_centroid.R
+│ ├── bellville-south-subsample.R
+│ ├── download_wind_data.R
+│ ├── join_bellville_wind.R
+│ ├── anonymise_sr_data.R
+│ ├── validate_hex_level8.R
+│ └── validate_sr_join.R
 │
-├── logs/ # Download and processing logs
+├── tests/ # R scripts for unit and integration tests of the above scripts
+│ ├── test_hex_extraction.R
+│ ├── test_join.R
+│ ├── test_unit_bellville.R
+│ ├── test_integration_bellville.R
+│ ├── test_wind_data.R
+│ ├── test_wind_join.R
+│ └── test_anonymisation.R
+|
 ├── Makefile # Workflow automation
-├── README.md # Project overview</code></pre>
+├── README.md # Project overview
+├── .gitignore
+├── LICENSE
+├── city_of_cape_town_technical.Rproj</code></pre>
 </div>
 <div id="script-details" class="section level2">
 <h2>Script Details</h2>
+<p>This section provides details as to the contents of the scripts and
+what they achieve.</p>
+<div id="requirements.r" class="section level3">
+<h3>requirements.R</h3>
+<p>Automatically installs all R packages required for execution of this
+project.</p>
+</div>
+<div id="extract_hex_res8.r" class="section level3">
+<h3>extract_hex_res8.R</h3>
+<p>Downloads and stores the AWS H3 resolution 8 data from
+city-hex-polygons-8-10.geojson. Stores this in
+data/processed/city-hex-polygons-8(new).geojson. Logs errors and
+download times in logs/extraction_log.txt.</p>
+</div>
+<div id="validate_hex_level8.r" class="section level3">
+<h3>validate_hex_level8.R</h3>
+<p>Compares data downloaded in hex_polygons_8.geojson (the supplied
+validation file) to the data extract stored in
+city-hex-polygons-8(new).geojson. All data should be resolution 8. Logs
+the result of the validation in logs/validation_log.txt.</p>
+</div>
+<div id="download_sr_data.r" class="section level3">
+<h3>download_sr_data.R</h3>
+<p>Downloads the City of Cape Town 2020 service request datasets off of
+AWS. These are stored in data/raw/sr_hex.csv.gz and data/raw/sr.csv.gz
+for later use. Logs the download times and errors in
+logs/download_sr_log.txt</p>
+</div>
+<div id="join_sr_to_hex.r" class="section level3">
+<h3>join_sr_to_hex.R</h3>
+<p>Joins the City of Cape Town 2020 service request data from
+data/raw/sr.csv.gz to the hex level 8 data in
+data/processed/city-hex-polygons-8(new).geojson. Outputs the results of
+the join to data/processed/sr_with_hex.csv.gz. Logs times, errors and
+join success rate to logs/join_log.txt. The recorded join joined 729267
+of 941634 data entries (77.45% success). A join error threshhold of 25%
+was used. We assume this to be an acceptable threshhold due to municipal
+data gaps or errors in municipal data being commonplace. Additionally
+the observed join failure rate was 22.55% so we apply a slight margin of
+error to this and assume a 25% threshhold. The join was performed on
+coordinate data. If this data was missing a 0 value was recorded in
+place of the geospatial index. The data was joined using a spatial join
+function from the <code>sf</code> package. This converts the coordinates
+from the service request data into H3 level 8 geospatial data and
+matches this with the H3 data from the extracted geojson file.</p>
+</div>
+<div id="validate_sr_join.r" class="section level3">
+<h3>validate_sr_join.R</h3>
+<p>This validates the sr_with_hex.csv.gz with the provided
+data/raw/sr_hex.csv.gz file. The validation, error and time logs are
+stored in logs/validation_sr_log.txt.</p>
+</div>
+<div id="get_bellville_centroid.r" class="section level3">
+<h3>get_bellville_centroid.R</h3>
+<p>Derives geospatial centroid latitude and longitude of Bellville South
+from service request data. Stores this in
+data/processed/bellville_centroid.csv. Logs timing and errors in
+logs/centroid_log.txt. This calculates the centroid using a data
+oriented approach. The script takes the service request data from
+data/processed/sr_with_hex.csv.gz, identifies all Bellville South
+service requests and aggregates across the latitudes and longitudes to
+calculate the coordinates of the centroid for Bellville South. The
+resultant centroid has coordinates of
+<code>latitude = -33.91728051899133</code> and
+<code>longitude = 18.642285211212553</code>. This data centered approach
+could be replaced by a standardised coordinate choice from Elevation Map
+[2] which yields <code>Latitude = -33.916111</code> and
+<code>longitude = 18.644444</code>. The coordinates of an
+‘administrative polygon’ may thus be preferred to our data centred
+approach. We note the similarity of our aggregated result to the one
+found online up to two decimal places.</p>
+</div>
+<div id="bellville-south-subsample.r" class="section level3">
+<h3>bellville-south-subsample.R</h3>
+<p>Samples data from the sr_hex.csv.gz that is within 1 minute of the
+centroid of the Bellville south suburb. Stores these records in
+data/processed/sr_bellville_south_subsample.csv.gz and logs errors and
+timing in logs/subsample_log.txt. We assume 1 minute is equivalent to
+one minute of latitude in distance. Since 1° of latitude has 60 minutes
+and since 1° spans approximately 111.32km [3] then 111.32/60 ≈ 1.85
+km/minute is the distance per minute. We acknowledge other
+interpretations of 1 minute such as one minute in travelling distance
+for various modes of transport. This is not explored here. A Haversine
+distance formula [4] is used to calculate distance in this script. This
+accounts for the curvature of the Earth.</p>
+</div>
+<div id="download_wind_data.r" class="section level3">
+<h3>download_wind_data.R</h3>
+<p>Downloads and cleans the 2020 wind speed and direction data for
+Bellville South. Stores this in
+data/processed/wind_bellville_2020.csv.gz and logs errors and timings in
+logs/wind_download_log.txt. The wind data is obtained from Open Meteo
+[1]. Data is obtained with careful consideration of the UTC and UTC+2
+timezone differences in the datasets. All data is stored in UTC+2.</p>
+</div>
+<div id="join_bellville_wind.r" class="section level3">
+<h3>join_bellville_wind.R</h3>
+<p>Joins the Bellville South subsample, in
+sr_bellville_south_subsample.csv.gz, with 2020 wind data in
+wind_bellville_2020.csv.gz. The join is performed by matching the
+nearest previous hour of the service requests creation times with the
+wind data times (in UTC+2). The combined dataset is stored in
+data/processed/sr_wind_joined.csv.gz and logs are stored in
+logs/join_wind_log.txt.</p>
+</div>
+<div id="anonymise_sr_data.r" class="section level3">
+<h3>anonymise_sr_data.R</h3>
+<p>Anonymises the Bellville South service request data with wind
+dataset. Stores this in data/processed/sr_wind_anonymised.csv.gz and
+logs errors and times in logs/anonymise_log.txt. Location accuracy is
+anonymised to be within 500m and creation time accuracy is anonymised to
+be within 6 hours of the original request via flooring to the nearest 6
+hour window (UTC+2 timezone). This prevents linking service request
+events to individuals through highly specific temporal data while
+preserving meaningful weather-related patterns. As the H3 level 8 data
+geospatial index assumes coordinates with approximately 500m this is
+used as the location data. This ensures spatial accuracy suitable for
+neighborhood-level analysis, while obscuring the exact location of the
+requester Furthermore assumed quasi-identifiers are removed from the
+dataset. Variables removed include the notification_number and
+reference_number which are potentially traceable, the
+completion_timestep and latitude and longitude data. The variables
+retained for analysis are thus the directorate, department, branch,
+section, code_group, code, cause_code_group, cause_code, the
+h3_level8_index spatial index and the anonymised_time. These variables
+pertain not to the requestor but to the response behaviour and service
+category.</p>
+</div>
+</div>
+<div id="testing-scripts" class="section level2">
+<h2>Testing Scripts</h2>
+<p>The testing scripts provide some unit and integration tests to test
+the output of the above scripts. <code>make test</code> runs these.</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
 <p>[1] Open-Meteo. (n.d.). <em>Free Weather API for non-commercial
 use</em>. Retrieved from <a href="https://open-meteo.com/">Open-Meteo</a></p>
+<p>[2] ElevationMap.net. (n.d.). Elevation of Bellville South, City of
+Cape Town, South Africa. Retrieved from <a href="https://elevationmap.net/bellville-south-city-of-cape-town-za-1011483330">elevation
+map</a></p>
+<p>[3] Wikipedia. (n.d.). Latitude. Retrieved from <a href="https://en.wikipedia.org/wiki/Latitude">wikipedia</a></p>
+<p>[4] Movable Type Scripts. (n.d.). Calculate distance, bearing and
+more between Latitude/Longitude points. Retrieved from <a href="https://www.movable-type.co.uk/scripts/latlong.html">movable-type</a></p>
 </div>
 </div>
 

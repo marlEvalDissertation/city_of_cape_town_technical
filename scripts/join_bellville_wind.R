@@ -22,11 +22,10 @@ log_path <- "logs/join_wind_log.txt"
 tic("Join wind data with subsample")
 
 tryCatch({
-  # Check input files
+  
   if (!file_exists(subsample_path)) stop("Subsample file not found: ", subsample_path)
   if (!file_exists(wind_data_path)) stop("Wind data file not found: ", wind_data_path)
   
-  # Load subsample
   sr_data <- read_csv(subsample_path, show_col_types = FALSE)
   
   # Validate creation_timestamp column
@@ -63,16 +62,11 @@ tryCatch({
   # Rolling join for each creation_timestamp, find latest wind_data timestamp <= creation_timestamp
   joined <- dt_wind[dt_sr, roll = TRUE]
   
-  # Rename columns for clarity
   result <- as_tibble(joined) %>% select(-creation_timestamp_utc) %>% select(-timestamp)
   
-  
-  
-  # Save output
   dir_create(dirname(output_path))
   write_csv(result, output_path)
   
-  # Logging
   elapsed <- toc(log = FALSE)
   log_msg <- paste0(
     Sys.time(), " - Successfully joined wind data to subsample. Rows: ", nrow(result),

@@ -10,7 +10,7 @@
 
 This project combines City of Cape Town service request data for the 2020 calendar year with level 8 H3 geospatial indexing data. 
 The Bellville South service requests are then combined with time-accurate wind speed and direction data from Open-Meteo [1]. This subsample is then anonymised according to principles of differential privacy for potential further use.
-The project includes timing, logging of times, logging of errors, validation tests against provided validation sets as well as unit tests and even integration tests.
+The project includes timing, logging of times, logging of errors, and validation tests against provided validation sets as well as unit tests and even integration tests.
 
 ## Prerequisites
 
@@ -162,7 +162,7 @@ Logs the download times and errors in logs/download_sr_log.txt
 Joins the City of Cape Town 2020 service request data from data/raw/sr.csv.gz to the hex level 8 data in data/processed/city-hex-polygons-8(new).geojson.
 Outputs the results of the join to data/processed/sr_with_hex.csv.gz. Logs times, errors and join success rate to logs/join_log.txt.
 The recorded join joined 729267 of 941634 data entries (77.45% success). A join error threshhold of 25% was used. We assume this to be an acceptable threshhold due to municipal data gaps or errors in municipal data being commonplace.
-Additionally the observed join failure rate was 22.55% so we apply a slight margin of error to this and assume a 25% threshhold. The join was performed on coordinate data. If this data was missing a 0 value was recorded in place of the geospatial index.
+Additionally the observed join failure rate was 22.55% so we apply a slight margin of error to this and assume a 25% threshhold. The join was performed on coordinate data. If this data was missing, a 0 value was recorded in place of the geospatial index.
 The data was joined using a spatial join function from the `sf` package. This converts the coordinates from the service request data into H3 level 8 geospatial data and matches this with the H3 data from the extracted geojson file.
 
 ### validate_sr_join.R
@@ -203,13 +203,43 @@ Location accuracy is anonymised to be within 500m and creation time accuracy is 
 This prevents linking service request events to individuals through highly specific temporal data while preserving meaningful weather-related patterns.
 As the H3 level 8 data geospatial index assumes coordinates with approximately 500m this is used as the location data. 
 This ensures spatial accuracy suitable for neighborhood-level analysis, while obscuring the exact location of the requester
-Furthermore assumed quasi-identifiers are removed from the dataset. Variables removed include the notification_number and reference_number which are potentially traceable, the completion_timestep and latitude and longitude data.
+Furthermore, assumed quasi-identifiers are removed from the dataset. Variables removed include the notification_number and reference_number which are potentially traceable, the completion_timestep and latitude and longitude data.
 The variables retained for analysis are thus the directorate, department, branch, section, code_group, code, cause_code_group, cause_code, the  h3_level8_index spatial index and the anonymised_time.
-These variables pertain not to the requestor but to the response behaviour and service category.
+These variables pertain not to the requester but to the response behaviour and service category.
 
 ## Testing Scripts
 
-The testing scripts provide some unit and integration tests to test the output of the above scripts. `make test` runs these. 
+The testing scripts provide some unit and integration tests to test the output of the above scripts. These use the `testthat` R package. `make test` runs these.
+
+### test_hex_extraction.R
+
+Tests that the extracted file, city-hex-polygons-8(new).geojson,  exist and load. Tests that only resolution 8 polygons are present. 
+
+### test_join.R
+
+This tests that the if there is missing latitude or longitude data that the join script indexes these as 0. It checks that the spatial join adds an index column.
+Lastly, it tests that join_sr_to_hex.R produces a joined output file with this index column.
+
+### test_unit_bellville.R
+
+Tests that the centroid file exists and contains a latitude and longitude. Tests that the Bellville South subsample file exists with latitude and longitude data.
+
+### test_integration_bellville.R
+
+Checks that all subsample rows in the Bellville South dataset are within 1.85km [3] of the calculated centroid.
+
+### test_wind_data.R
+
+Tests that the wind file exists, has speed and direction data and has no missing values.
+
+### test_wind_join.R
+
+Tests that the wind speed and direction data was added to the Bellville South subsample, and that the values are not `NA`.
+
+### test_anonymisation.R
+
+Checks that the anonymised file exists, that none of the reference number, notification number, latitude, longitude or completion_timestamp remain (identifiers).
+Checks that the other fields are retained and that the H3 spatial index is present.
 
 ## References
 

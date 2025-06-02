@@ -1,4 +1,4 @@
-# tests/test-join_utils.R
+# tests/test_join.R
 # CoCT x JPAL challenge
 # test the join operation
 
@@ -7,7 +7,24 @@ suppressPackageStartupMessages({
 library(testthat)
 library(dplyr)
 library(sf)
+library(readr)
 })
+
+test_that("join_sr_to_hex.R produces a valid joined output file", {
+  output_path <- "data/processed/sr_with_hex.csv.gz"
+  
+  # Confirm the output file was created
+  expect_true(file.exists(output_path))
+  
+  # Read output and run sanity checks
+  joined <- read_csv(output_path, show_col_types = FALSE)
+  
+  expect_true("index" %in% colnames(joined))
+  expect_gt(nrow(joined), 0)
+  expect_false(all(is.na(joined$index)))
+})
+
+
 
 test_that("Missing lat/lon rows are handled correctly", {
   df <- tibble(
@@ -25,7 +42,7 @@ test_that("Missing lat/lon rows are handled correctly", {
 })
 
 test_that("Spatial join adds index column", {
-  # Create a small test hexagon polygon
+  
   hex <- st_sf(index = "abc123", geometry = st_sfc(st_polygon(list(rbind(
     c(18.4, -33.9), c(18.6, -33.9), c(18.6, -33.7),
     c(18.4, -33.7), c(18.4, -33.9)
