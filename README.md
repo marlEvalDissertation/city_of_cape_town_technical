@@ -174,8 +174,9 @@ This validates the sr_with_hex.csv.gz with the provided data/raw/sr_hex.csv.gz f
 Derives geospatial centroid latitude and longitude of Bellville South from service request data. Stores this in data/processed/bellville_centroid.csv.
 Logs timing and errors in logs/centroid_log.txt. This calculates the centroid using a data oriented approach.
 The script takes the service request data from data/processed/sr_with_hex.csv.gz, identifies all Bellville South service requests and aggregates across the latitudes and longitudes to calculate the coordinates of the centroid for Bellville South.
-The resultant centroid has coordinates of `latitude = -33.91728051899133` and `longitude = 18.642285211212553`. This data centered approach could be replaced by a standardised coordinate choice from Elevation Map [2] which yields `Latitude = -33.916111` and `longitude = 18.644444`.
-We note the similarity of our aggregated result to the one found online up to two decimal places.
+The resultant centroid has coordinates of `latitude = -33.91728051899133` and `longitude = 18.642285211212553`.
+This data centered approach could be replaced by a standardised coordinate choice from Elevation Map [2] which yields `Latitude = -33.916111` and `longitude = 18.644444`. The coordinates of an 'administrative polygon' may thus be preferred to our data centred approach.
+We note the similarity of our aggregated result to the one found online up to two decimal places. 
 
 
 ### bellville-south-subsample.R
@@ -186,11 +187,29 @@ We acknowledge other interpretations of 1 minute such as one minute in travellin
 
 ### download_wind_data.R
 
+Downloads and cleans the 2020 wind speed and direction data for Bellville South. Stores this in data/processed/wind_bellville_2020.csv.gz 
+and logs errors and timings in logs/wind_download_log.txt. The wind data is obtained from Open Meteo [1]. Data is obtained with careful consideration of the UTC and UTC+2 timezone differences in the datasets.
+All data is stored in UTC+2.
 
+### join_bellville_wind.R
+
+Joins the Bellville South subsample, in sr_bellville_south_subsample.csv.gz, with 2020 wind data in wind_bellville_2020.csv.gz. The join is performed by matching the nearest previous hour of the service requests creation times with the wind data times (in UTC+2).
+The combined dataset is stored in data/processed/sr_wind_joined.csv.gz and logs are stored in logs/join_wind_log.txt.
+
+### anonymise_sr_data.R
+
+Anonymises the Bellville South service request data with wind dataset. Stores this in data/processed/sr_wind_anonymised.csv.gz and logs errors and times in logs/anonymise_log.txt.
+Location accuracy is anonymised to be within 500m and creation time accuracy is anonymised to be within 6 hours of the original request via flooring to the nearest 6 hour window (UTC+2 timezone).
+This prevents linking service request events to individuals through highly specific temporal data while preserving meaningful weather-related patterns.
+As the H3 level 8 data geospatial index assumes coordinates with approximately 500m this is used as the location data. 
+This ensures spatial accuracy suitable for neighborhood-level analysis, while obscuring the exact location of the requester
+Furthermore assumed quasi-identifiers are removed from the dataset. Variables removed include the notification_number and reference_number which are potentially traceable, the completion_timestep and latitude and longitude data.
+The variables retained for analysis are thus the directorate, department, branch, section, code_group, code, cause_code_group, cause_code, the  h3_level8_index spatial index and the anonymised_time.
+These variables pertain not to the requestor but to the response behaviour and service category.
 
 ## Testing Scripts
 
-
+The testing scripts provide some unit and integration tests to test the output of the above scripts. `make test` runs these. 
 
 ## References
 

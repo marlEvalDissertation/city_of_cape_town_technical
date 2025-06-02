@@ -40,3 +40,7 @@
 
 2025-06-02 21:35:16.389527 - Successfully joined wind data to subsample. Rows: 7753. Time taken: 1.06 sec
 
+2025-06-02 21:48:15.471624 - Successfully joined wind data to subsample. Rows: 7753. Time taken: 0.83 sec
+
+2025-06-02 21:52:08.681895 - Successfully joined wind data to subsample. Rows: 7753. Time taken: 0.81 sec
+

@@ -1,6 +1,6 @@
 # scripts/download_wind_data.R
 # CoCT x JPAL Challenge
-# Download and clean 2020 wind data for Bellville South (UTC+2 calendar year)
+# Download and clean 2020 wind data for Bellville South
 
 source("scripts/requirements.R")
 
@@ -29,9 +29,7 @@ if (!all(c("centroid_longitude", "centroid_latitude") %in% names(centroid))) {
 lon <- centroid$centroid_longitude[1]
 lat <- centroid$centroid_latitude[1]
 
-# API URL using Open-Meteo
-# To ensure we get the full 2020 calendar year in Africa/Johannesburg time,
-# we must extend the UTC window slightly: from 2019-12-31 to 2021-01-01
+
 url <- paste0(
   "https://archive-api.open-meteo.com/v1/archive?",
   "latitude=", lat,

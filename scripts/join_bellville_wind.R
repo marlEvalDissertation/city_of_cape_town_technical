@@ -19,7 +19,6 @@ wind_data_path <- "data/processed/wind_bellville_2020.csv.gz"
 output_path <- "data/processed/sr_wind_joined.csv.gz"
 log_path <- "logs/join_wind_log.txt"
 
-# Start timing
 tic("Join wind data with subsample")
 
 tryCatch({
@@ -33,7 +32,7 @@ tryCatch({
   # Validate creation_timestamp column
   if (!"creation_timestamp" %in% names(sr_data)) stop("Missing 'creation_timestamp' column in subsample data.")
   
-  # Parse creation_timestamp (ISO 8601 with Z suffix) as UTC then convert to Africa/Johannesburg
+  # Parse creation_timestamp as UTC then convert to Africa/Johannesburg
   sr_data <- sr_data %>%
     mutate(
       creation_timestamp_utc = ymd_hms(creation_timestamp, tz = "UTC"),
@@ -61,10 +60,10 @@ tryCatch({
   setkey(dt_sr, creation_timestamp_loc)
   setkey(dt_wind, timestamp)
   
-  # Rolling join: for each creation_timestamp_loc, find latest wind_data timestamp <= creation_timestamp_loc
+  # Rolling join for each creation_timestamp, find latest wind_data timestamp <= creation_timestamp
   joined <- dt_wind[dt_sr, roll = TRUE]
   
-  # Rename columns for clarity and convert back to tibble
+  # Rename columns for clarity
   result <- as_tibble(joined) %>% select(-creation_timestamp_utc) %>% select(-timestamp)
   
   
