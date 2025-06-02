@@ -19,7 +19,7 @@ output_path <- "data/processed/sr_bellville_south_subsample.csv.gz"
 centroid_path <- "data/processed/bellville_centroid.csv"
 log_path <- "logs/subsample_log.txt"
 
-# Distance threshold (1 minute of arc approx 1.85km)
+# Distance threshold
 distance_threshold_km <- 1.85
 
 # Start timing
@@ -50,8 +50,8 @@ tryCatch({
   # Filter non-missing coordinate rows
   sr_valid <- sr_data %>% filter(!is.na(longitude) & !is.na(latitude))
   
-  # Compute distances to centroid (in meters)
-  distances <- distHaversine(sr_valid[, c("longitude", "latitude")], centroid) / 1000  # km
+  # Compute distances to centroid meters
+  distances <- distHaversine(sr_valid[, c("longitude", "latitude")], centroid) / 1000 
   
   # Add to dataframe
   sr_valid <- sr_valid %>% mutate(distance_to_centroid_km = distances)

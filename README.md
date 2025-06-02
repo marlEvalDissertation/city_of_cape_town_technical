@@ -110,6 +110,7 @@ make clean
 │ ├── extract_hex_res8.R
 │ ├── download_sr_data.R
 │ ├── join_sr_to_hex.R
+│ ├── get_bellville_centroid.R
 │ ├── bellville-south-subsample.R
 │ ├── download_wind_data.R
 │ ├── join_bellville_wind.R
@@ -168,12 +169,40 @@ The data was joined using a spatial join function from the `sf` package. This co
 
 This validates the sr_with_hex.csv.gz with the provided data/raw/sr_hex.csv.gz file. The validation, error and time logs are stored in logs/validation_sr_log.txt.
 
+### get_bellville_centroid.R
+
+Derives geospatial centroid latitude and longitude of Bellville South from service request data. Stores this in data/processed/bellville_centroid.csv.
+Logs timing and errors in logs/centroid_log.txt. This calculates the centroid using a data oriented approach.
+The script takes the service request data from data/processed/sr_with_hex.csv.gz, identifies all Bellville South service requests and aggregates across the latitudes and longitudes to calculate the coordinates of the centroid for Bellville South.
+The resultant centroid has coordinates of `latitude = -33.91728051899133` and `longitude = 18.642285211212553`. This data centered approach could be replaced by a standardised coordinate choice from Elevation Map [2] which yields `Latitude = -33.916111` and `longitude = 18.644444`.
+We note the similarity of our aggregated result to the one found online up to two decimal places.
+
+
 ### bellville-south-subsample.R
+
+Samples data from the sr_hex.csv.gz that is within 1 minute of the centroid of the Bellville south suburb. Stores these records in data/processed/sr_bellville_south_subsample.csv.gz and logs errors and timing in logs/subsample_log.txt.
+We assume 1 minute is equivalent to one minute of latitude in distance. Since 1° of latitude has 60 minutes and since 1° spans approximately 111.32km [3] then 111.32/60 ≈ 1.85 km/minute is the distance per minute. 
+We acknowledge other interpretations of 1 minute such as one minute in travelling distance for various modes of transport. This is not explored here. A Haversine distance formula [4] is used to calculate distance in this script. This accounts for the curvature of the Earth.
+
+### download_wind_data.R
 
 
 
 ## Testing Scripts
 
+
+
 ## References
 
 [1] Open-Meteo. (n.d.). *Free Weather API for non-commercial use*. Retrieved from [Open-Meteo](https://open-meteo.com/)
+
+[2] ElevationMap.net. (n.d.). Elevation of Bellville South, City of Cape Town, South Africa. Retrieved from [elevation map](https://elevationmap.net/bellville-south-city-of-cape-town-za-1011483330)
+
+[3] Wikipedia. (n.d.). Latitude. Retrieved from [wikipedia](https://en.wikipedia.org/wiki/Latitude)
+
+[4] Movable Type Scripts. (n.d.). Calculate distance, bearing and more between Latitude/Longitude points. Retrieved from [movable-type](https://www.movable-type.co.uk/scripts/latlong.html)
+
+
+
+
+

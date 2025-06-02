@@ -12,3 +12,7 @@
 
 2025-06-02 21:03:01.893723 - Anonymised data saved. Rows: 7753. Time taken: 0.77 sec
 
+2025-06-02 21:19:20.893114 - Anonymised data saved. Rows: 7753. Time taken: 0.59 sec
+
+2025-06-02 21:35:21.829368 - Anonymised data saved. Rows: 7753. Time taken: 0.85 sec
+
