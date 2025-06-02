@@ -30,3 +30,9 @@
 
 2025-06-01 22:24:47.482024 - Filtered 7753 requests within 1.85 km of Bellville South centroid. Time taken: 6.5 sec
 
+2025-06-02 20:44:46.61781 - Filtered 7753 requests within 1.85 km of Bellville South centroid. Time taken: 7.55 sec
+
+2025-06-02 20:53:20.939664 - Filtered 7753 requests within 1.85 km of Bellville South centroid. Time taken: 6.89 sec
+
+2025-06-02 21:02:48.907486 - Filtered 7753 requests within 1.85 km of Bellville South centroid. Time taken: 7.51 sec
+

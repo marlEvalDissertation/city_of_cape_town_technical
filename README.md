@@ -93,11 +93,86 @@ To remove all downloaded and processed data files run:
 ``` bash
 make clean
 ```
-## Details
 
 ## File Structure
 
-## Script Content
+```
+├── data/
+│ ├── raw/ # Unprocessed data files
+│ └── processed/ # Cleaned and joined datasets
+│
+├── img/ # City of Cape Town Logo
+│
+├── logs/ # logs of download and processing times and errors
+|
+├── scripts/ # All scripts for execution of project tasks and data validation
+│ ├── requirements.R
+│ ├── extract_hex_res8.R
+│ ├── download_sr_data.R
+│ ├── join_sr_to_hex.R
+│ ├── bellville-south-subsample.R
+│ ├── download_wind_data.R
+│ ├── join_bellville_wind.R
+│ ├── anonymise_sr_data.R
+│ ├── validate_hex_level8.R
+│ └── validate_sr_join.R
+│
+├── tests/ # R scripts for unit and integration tests of the above scripts
+│ ├── test_hex_extraction.R
+│ ├── test_join.R
+│ ├── test_unit_bellville.R
+│ ├── test_integration_bellville.R
+│ ├── test_wind_data.R
+│ ├── test_wind_join.R
+│ └── test_anonymisation.R
+|
+├── Makefile # Workflow automation
+├── README.md # Project overview
+├── .gitignore
+├── LICENSE
+├── city_of_cape_town_technical.Rproj
+```
+
+## Script Details
+
+This section provides details as to the contents of the scripts and what they achieve.
+
+### requirements.R
+
+Automatically installs all R packages required for execution of this project.
+
+### extract_hex_res8.R
+
+Downloads and stores the AWS H3 resolution 8 data from city-hex-polygons-8-10.geojson. Stores this in data/processed/city-hex-polygons-8(new).geojson.
+Logs errors and download times in logs/extraction_log.txt.
+
+### validate_hex_level8.R
+
+Compares data downloaded in hex_polygons_8.geojson (the supplied validation file) to the data extract stored in city-hex-polygons-8(new).geojson.
+All data should be resolution 8. Logs the result of the validation in logs/validation_log.txt.
+
+### download_sr_data.R
+
+Downloads the City of Cape Town 2020 service request datasets off of AWS. These are stored in data/raw/sr_hex.csv.gz and data/raw/sr.csv.gz for later use.
+Logs the download times and errors in logs/download_sr_log.txt
+
+### join_sr_to_hex.R
+
+Joins the City of Cape Town 2020 service request data from data/raw/sr.csv.gz to the hex level 8 data in data/processed/city-hex-polygons-8(new).geojson.
+Outputs the results of the join to data/processed/sr_with_hex.csv.gz. Logs times, errors and join success rate to logs/join_log.txt.
+The recorded join joined 729267 of 941634 data entries (77.45% success). A join error threshhold of 25% was used. We assume this to be an acceptable threshhold due to municipal data gaps or errors in municipal data being commonplace.
+Additionally the observed join failure rate was 22.55% so we apply a slight margin of error to this and assume a 25% threshhold. The join was performed on coordinate data. If this data was missing a 0 value was recorded in place of the geospatial index.
+The data was joined using a spatial join function from the `sf` package. This converts the coordinates from the service request data into H3 level 8 geospatial data and matches this with the H3 data from the extracted geojson file.
+
+### validate_sr_join.R
+
+This validates the sr_with_hex.csv.gz with the provided data/raw/sr_hex.csv.gz file. The validation, error and time logs are stored in logs/validation_sr_log.txt.
+
+### bellville-south-subsample.R
+
+
+
+## Testing Scripts
 
 ## References
 

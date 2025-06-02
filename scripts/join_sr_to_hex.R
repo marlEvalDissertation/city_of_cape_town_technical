@@ -14,8 +14,7 @@ library(fs)
 
 # Required input files
 required_files <- c(
-  "data/raw/sr.csv.gz",
-  "data/raw/sr_hex.csv.gz"
+  "data/raw/sr.csv.gz"
 )
 
 # Check if all files exist
@@ -33,7 +32,6 @@ if (!all(file_exists(required_files))) {
 # File paths
 hex_path <- "data/processed/city-hex-polygons-8(new).geojson"
 sr_path <- "data/raw/sr.csv.gz"
-sr_hex_val_path <- "data/raw/sr_hex.csv.gz"
 output_path <- "data/processed/sr_with_hex.csv.gz"
 log_path <- "logs/join_log.txt"
 
@@ -51,7 +49,7 @@ tryCatch({
   hex <- st_read(hex_path, quiet = TRUE)
   sr_raw <- suppressMessages(read_csv(sr_path, col_types = cols(`...1` = col_skip()), show_col_types = FALSE))  
   
-  # Convert to sf for spatial join (only if coords are present)
+  # Convert to sf for spatial join
   sr_sf <- sr_raw %>%
     filter(!is.na(latitude) & !is.na(longitude)) %>%
     st_as_sf(coords = c("longitude", "latitude"), crs = 4326, remove = FALSE)

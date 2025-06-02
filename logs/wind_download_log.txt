@@ -32,3 +32,9 @@
 
 2025-06-01 22:24:52.371598 - Downloaded and saved 8784 hourly wind observations. Time taken: 1.69 sec
 
+2025-06-02 20:44:52.312185 - Downloaded and saved 8784 hourly wind observations. Time taken: 1.81 sec
+
+2025-06-02 20:53:25.988814 - Downloaded and saved 8784 hourly wind observations. Time taken: 1.85 sec
+
+2025-06-02 21:02:54.276764 - Downloaded and saved 8784 hourly wind observations. Time taken: 1.67 sec
+

@@ -1,6 +1,6 @@
 #scripts/validate_sr_result.R
 # CoCT x JPAL challenge
-# Minimal validation script for sr_with_hex.csv.gz
+# Validation with sr_with_hex.csv.gz
 
 source("scripts/requirements.R")
 

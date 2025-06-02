@@ -46,11 +46,3 @@ tryCatch({
   write(paste(Sys.time(), "- ERROR:", e$message), file = log_path, append = TRUE)
   stop(e)
 })
-
-# trace statements
-#print("Processed columns:")
-#print(names(geo_processed))
-  
-#print("Reference columns:")
-
-#print(names(geo_reference))
