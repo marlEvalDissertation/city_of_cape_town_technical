@@ -220,6 +220,10 @@ Tests that the extracted file, city-hex-polygons-8(new).geojson,  exist and load
 This tests that the if there is missing latitude or longitude data that the join script indexes these as 0. It checks that the spatial join adds an index column.
 Lastly, it tests that join_sr_to_hex.R produces a joined output file with this index column.
 
+### integration_test_sr_join.R
+
+Tests that the join file exists, that it has the same number of rows as the validation file, that is contains the h3 indices and that all of these are the same as in the validation file.
+
 ### test_unit_bellville.R
 
 Tests that the centroid file exists and contains a latitude and longitude. Tests that the Bellville South subsample file exists with latitude and longitude data.

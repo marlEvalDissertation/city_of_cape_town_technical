@@ -27,6 +27,7 @@ test:
 	@echo "Running tests..."
 	Rscript tests/test_hex_extraction.R
 	Rscript tests/test_join.R
+	Rscript tests/integration_test_sr_join.R
 	Rscript tests/test_unit_bellville.R
 	Rscript tests/test_integration_bellville.R
 	Rscript tests/test_wind_data.R
